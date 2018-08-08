@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>all lonely people, enter info here</title>
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Loners Landing</h1>
+            <h3>Let us help you find friends :D</h3>
+            <h4>After entering your name and age, put down how much you like the following items on a scale of 1 to 5, 5 being you love it, and 1 being, you really rather not</h4>
+            <hr>
+            <a href="/">
+                <button type="button" class="btn btn-lg">
+                    <span class="glyphicon glyphicon-eye-open"></span>View friends</button>
+            </a>
+        </div>
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <strong>Add Characters</strong>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="POST" role="form">
+
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="text" class="form-control" id="age">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cat">Cats</label>
+                                <input type="text" class="form-control" id="cat">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dog">Dogs</label>
+                                <input type="text" class="form-control" id="dog">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loyalty">Loyalty</label>
+                                <input type="text" class="form-control" id="loyalty">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="outdoorsy">Outdoorsy?</label>
+                                <input type="text" class="form-control" id="outdoorsy">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="indoorsy">Indoorsy</label>
+                                <input type="text" class="form-control" id="indoorsy">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sports">Sports</label>
+                                <input type="text" class="form-control" id="sports">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="movies">Movies</label>
+                                <input type="text" class="form-control" id="movies">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="foodie">Foodie?</label>
+                                <input type="text" class="form-control" id="foodie">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="travel">Travel?</label>
+                                <input type="text" class="form-control" id="travel">
+                            </div>
+
+                        </form>
+                        <br>
+
+                        <!-- Button trigger modal -->
+                        <button id="modal-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                           show match
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">congratulations, we found a match! your newest friend is</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 id="displayname"></h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <!-- <button type="submit" class="btn btn-primary btn-md" id="add-btn">
+                                <span class="glyphicon glyphicon-fire"></span>   Add qualities</button> -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+    var currentURL = window.location.origin;
+        
+        $("#modal-btn").on("click", function (event) {
+            event.preventDefault();
+            var newCharacter = {
+                name: $("#name").val().trim(),
+                age: $("#age").val().trim(),
+                cat: $("#cat").val().trim(),
+                dog: $("#dog").val().trim(),
+                loyalty: $("#loyalty").val().trim(),
+                outdoorsy: $("#outdoorsy").val().trim(),
+                indoorsy: $("#indoorsy").val().trim(),
+                sports: $("#sports").val().trim(),
+                movies: $("#movies").val().trim(),
+                foodie: $("#foodie").val().trim(),
+                travel: $("#travel").val().trim()
+            };
+
+            
+                console.log("this is your new character!!!   " + newCharacter);
+            // This sends the newly added individual to the list of API's
+            $.post("/api/new", newCharacter)
+                .then(function (data) {
+                    console.log("this is your data!!!!    " + data);
+                    alert("Adding info...");
+                });
+
+                $.get("/api/", function (data) {
+                console.log("This is your Data: " + data + "is the best match");
+                // console.log("This is your BFF " + Bff);
+                if (data) {
+                    // $("#stats").show();
+                    $("#displayname").text(data);
+                    $("#displaypic").text(data);
+
+
+                }
+                else {
+                    $("#name").text("we're sorry, that lonley individual has not been found");
+                    $("#stats").hide();
+                }
+            });
+                
+        });
+
+    </script>
+
+</body>
+
+</html>
